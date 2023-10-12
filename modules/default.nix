@@ -7,5 +7,5 @@
         ./users.nix
         ./vm.nix
         ./wms.nix
-    ]
+    ];
 }

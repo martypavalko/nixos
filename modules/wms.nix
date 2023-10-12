@@ -5,16 +5,16 @@
         enable = true;
         # windowManager.dwm.enable = true;
         windowManager.bspwm.enable = true;
-        services.xserver.layout = "us";
+        layout = "us";
         # videoDrivers = [ "nvidia" ];
         # videoDrivers = [ "amdgpu-pro" ];
-        displayManager {
+        displayManager = {
             lightdm.enable = true;
             autoLogin = {
                 enable = false;
                 user = "marty";
             };
-        }
+        };
     };
 
     services.picom =  {
