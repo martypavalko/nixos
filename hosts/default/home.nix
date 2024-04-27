@@ -109,6 +109,7 @@
     viAlias = true;
     vimAlias = true;
     vimdiffAlias = true;
+    # extraConfig = builtins.readFile /home/marty/.dotfiles/nvim/init.lua;
   };
 
   programs.tmux = {
