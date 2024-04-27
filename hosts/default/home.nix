@@ -94,6 +94,7 @@
     shellAliases = {
       ll = "ls -l";
       update = "sudo nixos-rebuild switch --flake /home/marty/.config/nixos#default";
+      lg = "lazygit";
     };
     history.size = 10000;
     history.path = "${config.xdg.dataHome}/zsh/history";
