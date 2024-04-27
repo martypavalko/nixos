@@ -112,6 +112,10 @@
     thefuck
     zsh-powerlevel10k
 
+    # utils
+    unzip
+    xclip
+
     # tmux
     tmux
 
@@ -120,6 +124,8 @@
     git
     curl
     kitty
+
+    # dev
     gcc
     go
     fd
