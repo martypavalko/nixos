@@ -103,6 +103,14 @@
     };
   };
 
+  programs.neovim = {
+    enable = true;
+    defaultEditor = true;
+    viAlias = true;
+    vimAlias = true;
+    vimdiffAlias = true;
+  };
+
   programs.tmux = {
     enable = true;
     terminal = "tmux-256color";
