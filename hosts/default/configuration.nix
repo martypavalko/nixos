@@ -54,8 +54,10 @@
   #
   # Configure keymap in X11
   services.xserver = {
-    layout = "us";
-    xkbVariant = "";
+    xkb = {
+      variant = "";
+      layout = "us";
+    };
     enable = true;
     displayManager.gdm.enable = true;
     # touchpad support

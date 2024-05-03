@@ -3,7 +3,7 @@
 let
   startupScript = pkgs.pkgs.writeShellScriptBin "start" ''
     ${pkgs.waybar}/bin/waybar &
-    ${pkgs.swww}/bin/swww init &
+    ${pkgs.swww}/bin/swww-daemon &
 
     sleep 1
   '';
