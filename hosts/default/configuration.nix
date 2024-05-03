@@ -46,17 +46,34 @@
   };
 
   # Enable the X11 windowing system.
-  services.xserver.enable = true;
-
-  # Enable the GNOME Desktop Environment.
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
-
+  # services.xserver.enable = true;
+  #
+  # # Enable the GNOME Desktop Environment.
+  # services.xserver.displayManager.gdm.enable = true;
+  # services.xserver.desktopManager.gnome.enable = true;
+  #
   # Configure keymap in X11
   services.xserver = {
     layout = "us";
     xkbVariant = "";
+    enable = true;
+    displayManager.gdm.enable = true;
+    # touchpad support
+    libinput.enable = true;
   };
+
+  #HyprLand Config
+
+  programs.hyprland = {
+      enable = true;
+      # nvidiaPatches = true;
+      package = inputs.hyprland.packages."${pkgs.system}".hyprland;
+      xwayland.enable = true;
+  };
+
+  hardware.opengl.enable = true;
+
+  # End HyprLand
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
@@ -108,17 +125,36 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    # HyprLand
+    waybar
+    gtk3
+    gtk2
+    #(waybar.overrideAttrs (oldAttrs: {
+    #    mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];
+    #  })
+    #)
+    
+    dunst
+    libnotify
+    swww
+    rofi-wayland
+    networkmanagerapplet
+    wl-clipboard
+    grim
+    slurp
+
+    pavucontrol
+
     # shell
     thefuck
     zsh-powerlevel10k
 
     # utils
     unzip
-    xclip
+    # xclip
 
     # tmux
     tmux
-
     neovim
     wget
     git

@@ -1,5 +1,14 @@
 { config, pkgs, ... }:
 
+let
+  startupScript = pkgs.pkgs.writeShellScriptBin "start" ''
+    ${pkgs.waybar}/bin/waybar &
+    ${pkgs.swww}/bin/swww init &
+
+    sleep 1
+  '';
+
+in
 {
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
@@ -198,6 +207,35 @@
       font_size 16.0
       enable_audio_bell no
     '';
+  };
+
+  wayland.windowManager.hyprland = {
+    enable = true;
+
+    settings = {
+      exec-once = ''${startupScript}/bin/start'';
+      "$mod" = "SUPER";
+      bind =
+      [
+        "$mod, Return, exec, kitty"
+	"$mod, f, exec, firefox"
+      ]
+      ++ (
+        builtins.concatLists (builtins.genList (
+          x: let
+	    ws = let
+	      c = (x + 1) / 10;
+	    in
+	      builtins.toString (x + 1 - (c * 10));
+	  in [
+	     "$mod, ${ws}, workspace, ${toString (x + 1)}"
+	     "$mod SHIFT, ${ws}, movetoworkspace, ${toString (x + 1)}"
+	     "$mod, Q, killactive"
+	     ]
+	   )
+	10)
+      );
+    };
   };
 
 }
