@@ -110,6 +110,7 @@
     description = "marty";
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
+      obsidian
       firefox
     ];
   };
@@ -153,6 +154,7 @@
 
     # utils
     unzip
+    lf
     # xclip
 
     # tmux
