@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, inputs, ... }:
 
 let
   startupScript = pkgs.pkgs.writeShellScriptBin "start" ''
@@ -7,12 +7,6 @@ let
 
     sleep 1
   '';
-  neovim-config = pkgs.fetchFromGitHub {
-    owner = "martypavalko";
-    repo = "nvim";
-    rev = "9f0a0b68b8fa9a6ffad1d06d7738ac251cc4d3c3";
-    sha256 = "tXYaYkL++M+1MLftK3RdVwxnhMOIyo8Eagf4GCjhL9M=";
-  };
 in
 {
   # Home Manager needs a bit of information about you and the paths it should
@@ -106,7 +100,7 @@ in
 
     shellAliases = {
       ll = "ls -l";
-      update = "sudo nixos-rebuild switch --flake /home/marty/.config/nixos#default";
+      update = "sudo nixos-rebuild switch --flake /home/marty/nixos#default";
       lg = "lazygit";
       nv = "nvim";
     };
@@ -118,16 +112,51 @@ in
     };
   };
 
-  programs.neovim = {
-    enable = true;
-    defaultEditor = true;
-    viAlias = true;
-    vimAlias = true;
-    vimdiffAlias = true;
-    # extraConfig = builtins.readFile /home/marty/.dotfiles/nvim/init.lua;
-  };
+  programs.neovim =
+    let
+        toLua = str: "lua << EOF\n${str}\nEOF\n";
+        toLuaFile = file: "lua << EOF\n${builtins.readFile file}\nEOF\n";
+    in
+    {
+        enable = true;
+        defaultEditor = true;
+        viAlias = true;
+        vimAlias = true;
+        vimdiffAlias = true;
+        extraPackages = with pkgs; [
+          gopls
+          lua-language-server
 
- xdg.configFile."nvim".source = neovim-config;
+          go
+          gcc
+
+          wl-clipboard
+        ];
+        plugins = with pkgs.vimPlugins; [
+          {
+            plugin = comment-nvim;
+            config = toLua "require(\"Comment\").setup()";
+          }
+          {
+            plugin = gruvbox-nvim;
+            config = "colorscheme gruvbox";
+          }
+          {
+            plugin = (nvim-treesitter.withPlugins (p: [
+            p.tree-sitter-nix
+            p.tree-sitter-vim
+            p.tree-sitter-bash
+            p.tree-sitter-lua
+            p.tree-sitter-python
+            p.tree-sitter-go
+            p.tree-sitter-json
+            p.tree-sitter-yaml
+            ]));
+          }
+          
+        ];
+        # extraConfig = builtins.readFile /home/marty/.dotfiles/nvim/init.lua;
+    };
 
   programs.tmux = {
     enable = true;
