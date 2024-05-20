@@ -7,14 +7,18 @@ let
 
     sleep 1
   '';
-
+  neovim-config = pkgs.fetchFromGitHub {
+    owner = "martypavalko";
+    repo = "nvim";
+    rev = "9f0a0b68b8fa9a6ffad1d06d7738ac251cc4d3c3";
+    sha256 = "tXYaYkL++M+1MLftK3RdVwxnhMOIyo8Eagf4GCjhL9M=";
+  };
 in
 {
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
   home.username = "marty";
   home.homeDirectory = "/home/marty";
-
 
   # This value determines the Home Manager release that your configuration is
   # compatible with. This helps avoid breakage when a new Home Manager release
@@ -104,6 +108,7 @@ in
       ll = "ls -l";
       update = "sudo nixos-rebuild switch --flake /home/marty/.config/nixos#default";
       lg = "lazygit";
+      nv = "nvim";
     };
     history.size = 10000;
     history.path = "${config.xdg.dataHome}/zsh/history";
@@ -121,6 +126,8 @@ in
     vimdiffAlias = true;
     # extraConfig = builtins.readFile /home/marty/.dotfiles/nvim/init.lua;
   };
+
+ xdg.configFile."nvim".source = neovim-config;
 
   programs.tmux = {
     enable = true;
@@ -237,5 +244,4 @@ in
       );
     };
   };
-
 }
